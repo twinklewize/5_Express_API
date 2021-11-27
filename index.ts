@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import { userRouter } from './users/users.js'
 
 const port = 8000
@@ -15,9 +15,9 @@ app.get('/hello', (req, res) => {
 
 app.use('/users', userRouter) // когда пользователь переходит на users, его запросы обрабатывает Router
 
-app.use((err, req, res, next) => { // обработчик ошибки
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => { // обработчик ошибки
     console.log(err.message)
-    res.status(401).send(err.message) 
+    res.status(401).send(err.message)
 })
 
 app.listen(port, () => { // нужно чтобы слушать запросы
