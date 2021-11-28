@@ -1,54 +1,43 @@
-// в js enum превращается либо в функцию, либо используется как значения только там где он нужен
-
-type direction = 'left | right'
-
-enum Direction1 {
-    Left = "left",
-    Right = "right"
+function log<T>(obj: T): T { // функция принимает T и возращает T
+    console.log(obj)
+    return obj
 }
 
+log<string>('asd')
+log<number>(3)
 
-
-enum Direction2 {
-    Left = 1,
-    Right // тогда Right 2
+function log2<T, K>(obj: T, arr: K[]): K[] { // функция принимает T и возращает T
+    console.log(obj)
+    return arr
 }
 
-enum Direction3 { // гетерогенный enum
-    Left = 1,
-    Right = "right"
+log2<string, number>('asd', [1, 2])
+
+interface HasLength {
+    length: number
 }
 
-enum Direction4 { // расчетный enum
-    Left = 'dfgd'.length,
-    Right = 1
+function log3<T extends HasLength>(obj: T): T { 
+    obj.length
+    return obj
 }
 
-enum Direction {
-    Left, // 0
-    Right // 1
+interface IUser {
+    name: string
+    age: number
+    bid: (sum: number) => boolean; // задаем функция интерфейсу
 }
 
-Direction.Left
-
-function move(direction: Direction) {
-    switch (direction) {
-        case Direction.Left:
-            return -1
-        case Direction.Right:
-            return 1
-    }
+function bid(sum: number): boolean{
+    return true
 }
 
-function objMod(obj: { Left: number }) {
-
+interface IUser2 {
+    name: string
+    age: number
+    bid2: <T>(sum: T) => boolean; // описываем с интерфейсом
 }
 
-objMod(Direction)
-
-const enum Dir {
-    Up,
-    Down
+function bid2<T>(sum: T): boolean{
+    return true
 }
-
-let myDirection = Dir.Up
