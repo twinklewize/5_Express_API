@@ -1,53 +1,54 @@
-const a = 'sdfgee' // константа имеет свое значение как тип
+// в js enum превращается либо в функцию, либо используется как значения только там где он нужен
 
-let b: 'hi' = "hi" //объявляем такой тип (правда так делать бесполезно)
+type direction = 'left | right'
 
-type direction = 'left' | 'right';
+enum Direction1 {
+    Left = "left",
+    Right = "right"
+}
 
-function moveDog(direction: direction): -1 | 0 | 1 {
+
+
+enum Direction2 {
+    Left = 1,
+    Right // тогда Right 2
+}
+
+enum Direction3 { // гетерогенный enum
+    Left = 1,
+    Right = "right"
+}
+
+enum Direction4 { // расчетный enum
+    Left = 'dfgd'.length,
+    Right = 1
+}
+
+enum Direction {
+    Left, // 0
+    Right // 1
+}
+
+Direction.Left
+
+function move(direction: Direction) {
     switch (direction) {
-        case 'left':
-            return -1;
-        case 'right':
+        case Direction.Left:
+            return -1
+        case Direction.Right:
             return 1
-        default: // нужно обязательно обрабатывать, потому что в рантайме TS нет
-            return 0
     }
 }
 
-moveDog('left') // теперь мы можем сюда передавать толко left и right
-
-interface IConnection {
-    host: string
-    port: number
-}
-
-function connect(connection: IConnection | "default") {
-    // можно комбинировать строковые литераты с обычными типами и интерфейсами
+function objMod(obj: { Left: number }) {
 
 }
 
-connect('default')
+objMod(Direction)
 
-const connection = {
-    host: 'localhost',
-    protocol: 'https' // имеет тип Sting
+const enum Dir {
+    Up,
+    Down
 }
 
-function connect2(host: string, protocol: 'http' | 'https') {
-
-}
-
-// connect2(connection.host, connection.protocol)
-// не будет работать, т.к. protocol имеет строчный тип и может быть изменен
-
-const connection2 = {
-    host: 'localhost',
-    protocol: 'https' as 'https' // объяляем тип 'https'
-}
-
-connect2(connection.host, connection2.protocol)
-
-const c: any = 5
-let d: number = c as number // преобразовать any в number
-let e = <number>c // другой способ (но лучше его не использовать, он не везде работает)
+let myDirection = Dir.Up
