@@ -1,43 +1,116 @@
-function log<T>(obj: T): T { // функция принимает T и возращает T
-    console.log(obj)
-    return obj
+class Coord {
+    message = "1"
+    #something = 1 // приватное св-ство JS 
+    // (использовать только если очень сильно нужно защитить переменную)
+    lat!: number // null-safety (StictPropertyInitialization: true)
+    long: number
+
+    private test() { // видно только в этом классе
+        if (this.lat > 0) {
+
+        }
+    }
+
+    protected computeDistace(newLat: number, newLong: number) {
+        // видно в этои классе и классах наследниках
+        this.test
+        return 0
+    }
+
+    constructor(lat: number, long: number) {
+        this.lat = lat
+        console.log(this.message)
+    }
 }
 
-log<string>('asd')
-log<number>(3)
+const point = new Coord(0, 1)
 
-function log2<T, K>(obj: T, arr: K[]): K[] { // функция принимает T и возращает T
-    console.log(obj)
-    return arr
+class MapLocation extends Coord {
+    message = "2"
+    private _name: string // уровни доступа после компиляции исчезают
+
+
+    get name() {
+        return this._name
+    }
+
+    set name(s: string) {
+        this._name = s + ' cool!'
+    }
+
+    override computeDistace(newLat: number, newLong: number) {
+        return 1
+    }
+
+    constructor(lat: number, long: number, name: string) {
+        super(lat, long) // в начале конструктора
+        this.name = name
+    }
+
+    private error() {
+
+    }
 }
 
-log2<string, number>('asd', [1, 2])
 
-interface HasLength {
-    length: number
+
+interface LoggerService {
+    log: (s: string) => void
 }
 
-function log3<T extends HasLength>(obj: T): T { 
-    obj.length
-    return obj
+class Logger implements LoggerService {
+    log(s: string) { // интерфейс не влияет на реализацию, нужно явно задавать тип
+        console.log(s)
+    }
 }
 
-interface IUser {
+const l = new Logger()
+l.log('d')
+
+
+class MyClass { //статических классов нету, только методы и переменные
+    static {
+    }
+    static a = "1"
+
+
+}
+
+MyClass.a
+
+class MyClass2<T> {
+    a: T
+}
+
+const b = new MyClass2<string>()
+b.a
+
+
+abstract class Base {
+    print(s: string) {
+        console.log(s)
+    }
+
+    abstract error(s: string): void
+}
+
+class BaseExtended extends Base {
+    error(s: string) { // мы обязаны реализовать метод error
+
+    }
+
+}
+
+new BaseExtended().print('s')
+
+class Animal {
     name: string
-    age: number
-    bid: (sum: number) => boolean; // задаем функция интерфейсу
 }
 
-function bid(sum: number): boolean{
-    return true
-}
-
-interface IUser2 {
+class Dog {
     name: string
-    age: number
-    bid2: <T>(sum: T) => boolean; // описываем с интерфейсом
+    tail: boolean
 }
 
-function bid2<T>(sum: T): boolean{
-    return true
-}
+const puppy: Animal = new Dog() // сужаем класс до Animal
+
