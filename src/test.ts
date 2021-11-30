@@ -1,18 +1,33 @@
 import 'reflect-metadata'
 
-function Test(target: Function) {
-    Reflect.defineMetadata('a', 1, target)
-    const meta = Reflect.getMetadata('a', target)
-    console.log(meta)
+function Injectable(key: string) {
+    return (target: Function) => {
+        Reflect.defineMetadata(key, 1, target)
+        const meta = Reflect.getMetadata(key, target)
+        console.log(meta)
+    }
 }
 
-function Prop(target: Object, name: string){
+// function Inject(key: string) {
+//     return (target: Function) => {
+//         Reflect.defineMetadata(key, 1, target)
+//         const meta = Reflect.getMetadata(key, target)
+//         console.log(meta)
+//     }
+// }
+
+function Prop(target: Object, name: string) {
 
 }
 
-@Test
+@Injectable('C')
 class C {
     @Prop prop: number
 }
 
-// метадата помогает делать проверку типов в рантайме (описано в Prop)
+@Injectable('D')
+class D {
+    constructor(@Inject('C') c: C) {}
+}
+
+// Объявляем объекты которые хотим Inject'ить, в глобальную область закидываем все что нужно
