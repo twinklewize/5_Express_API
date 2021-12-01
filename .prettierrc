@@ -1,0 +1,9 @@
+{
+	"singleQuote": true, // одиночные кавычки
+	"trailingComma": "all", // разрешаем висящую точку с запятой
+	// "useTabs": true,
+	"semi": true,
+	"bracketSpacing": true,
+	"printWidth": 100,
+	"endOfLine": "auto"
+} 
