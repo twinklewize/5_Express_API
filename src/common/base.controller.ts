@@ -32,8 +32,11 @@ export abstract class BaseController {
   protected bindRoutes(routes: IControllerRoute[]): void {
     for (const route of routes) {
       this.logger.log(`[${route.method}] ${route.path}`);
+      const middleware = route.middlewares?.map((m) => m.execute.bind(m)); // биндим все middlewares
       const handler = route.func.bind(this); // сохраняем контекст
-      this.router[route.method](route.path, handler);
+      const pipeline = middleware ? [...middleware, handler] : handler;
+      // если есть middleware, то сначала они, а потом handler, если нет, то только handler
+      this.router[route.method](route.path, pipeline);
       // когда мы передаем функцию route.func вместо handler мы теряем контекст исходного класса
       // теряется this и остальные заданные значения класса
     }
