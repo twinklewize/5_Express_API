@@ -10,6 +10,8 @@ import { LoggerService } from './logger/logger.service';
 import { TYPES } from './types';
 import { UserController } from './users/users.conroller';
 import { IUserController } from './users/users.controller.interface';
+import { UsersRepository } from './users/users.repository';
+import { IUsersRepository } from './users/users.repository.interface';
 import { UsersService } from './users/users.service';
 import { IUsersSevice } from './users/users.service.interface';
 
@@ -26,6 +28,7 @@ export const appBingings = new ContainerModule((bind: interfaces.Bind) => {
   bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
   // Singletone (те которые вызываются всего 1 раз можно оставить не сигнлтонами)
   bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
+  bind<IUsersRepository>(TYPES.UsersRepository).to(UsersRepository).inSingletonScope();
   bind<App>(TYPES.Application).to(App).inSingletonScope();
 });
 
