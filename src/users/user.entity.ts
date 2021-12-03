@@ -17,7 +17,7 @@ export class User {
     return this._password;
   }
 
-  public async setPassword(pass: string): Promise<void> {
-    this._password = await hash(pass, 10); // второй параметр - "соль" (должна быть приватной в конфигурации приложения)
+  public async setPassword(pass: string, salt: number): Promise<void> {
+    this._password = await hash(pass, salt); // второй параметр - "соль" (должна быть приватной в конфигурации приложения)
   }
 }

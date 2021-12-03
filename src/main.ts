@@ -1,5 +1,7 @@
 import { Container, ContainerModule, interfaces } from 'inversify';
 import { App } from './app';
+import { ConfigService } from './config/config.service';
+import { IConfigService } from './config/config.service.interface';
 import { ExceptionFilter } from './errors/exception.filter';
 import { IExceptionFilter } from './errors/exception.filter.interface';
 import { ILogger } from './logger/logger.interface';
@@ -16,11 +18,13 @@ export interface IBootstrapReturn {
 }
 
 export const appBingings = new ContainerModule((bind: interfaces.Bind) => {
-  bind<ILogger>(TYPES.ILogger).to(LoggerService);
-  bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter);
-  bind<IUserController>(TYPES.UserController).to(UserController);
-  bind<IUsersSevice>(TYPES.UsersService).to(UsersService);
-  bind<App>(TYPES.Application).to(App);
+  bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
+  bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter).inSingletonScope();
+  bind<IUserController>(TYPES.UserController).to(UserController).inSingletonScope();
+  bind<IUsersSevice>(TYPES.UsersService).to(UsersService).inSingletonScope();
+  bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
+  // Singletone (те которые вызываются всего 1 раз можно оставить не сигнлтонами)
+  bind<App>(TYPES.Application).to(App).inSingletonScope();
 });
 
 function bootstrap(): IBootstrapReturn {
