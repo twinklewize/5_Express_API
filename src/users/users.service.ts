@@ -6,12 +6,12 @@ import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { User } from './user.entity';
 import { IUsersRepository } from './users.repository.interface';
-import { IUsersSevice } from './users.service.interface';
+import { IUsersService } from './users.service.interface';
 
 // создание пользователя
 
 @injectable()
-export class UsersService implements IUsersSevice {
+export class UsersService implements IUsersService {
   constructor(
     @inject(TYPES.ConfigService) private configService: IConfigService,
     @inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
