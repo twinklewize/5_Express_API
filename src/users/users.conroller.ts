@@ -36,6 +36,12 @@ export class UserController extends BaseController implements IUserController {
         func: this.login,
         middlewares: [new ValidateMiddleware(UserLoginDto)],
       },
+      {
+        path: '/info',
+        method: 'get',
+        func: this.info,
+        middlewares: [],
+      },
     ]);
   }
 
@@ -65,9 +71,14 @@ export class UserController extends BaseController implements IUserController {
     this.ok(res, { email: result.email, id: result.id });
   }
 
+  async info({ user }: Request, res: Response, next: NextFunction): Promise<void> {
+    this.ok(res, { email: user });
+  }
+
   // iat нужен, чтобы каждый раз не было одного и того же токена и не произошло его утечки
   // в правильной реализации должно быть 2 токена JWT и Refresh, JWT имеет ограниченный период жизни
   // когда он заканчивается отправляется Refresh token и  с его помощью получается новый JWT token
+  // так же токен можно генерировать при помощи паспорта в express
   private signJWT(email: string, secret: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       sign(
